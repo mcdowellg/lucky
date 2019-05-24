@@ -11,7 +11,7 @@ declare const Buffer;
 @Component({
   selector: 'app-map-chart',
   templateUrl: './map-chart.component.html',
-  styleUrls: ['./map-chart.component.css']
+  styleUrls: ['./map-chart.component.scss']
 })
 
 export class MapChartComponent {  

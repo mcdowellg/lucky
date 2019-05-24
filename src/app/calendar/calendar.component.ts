@@ -1,44 +1,28 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, ViewChildren } from '@angular/core';
-
-import * as $ from 'jquery';
-import * as moment from 'moment';
-import 'fullcalendar';
-import { OptionsInput } from '@fullcalendar/core';
-import { NgZone } from '@angular/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, ViewChildren } from '@angular/core';
+import { OptionsInput } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, {Draggable} from '@fullcalendar/interaction';
-import { CalendarComponent } from 'ng-fullcalendar';
-import { EventsService } from '../events.service'
-import { MatDialog, MatDialogModule, MatFormField, MatDialogRef} from '@angular/material';
+import { FullCalendarComponent } from '@fullcalendar/angular';
+import { EventsService } from '../events.service';
+import listPlugin from '@fullcalendar/list';
+import { MatDialog} from '@angular/material';
 import { ChoosePeopleMachinesComponent } from '../choose-people-machines/choose-people-machines.component';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { MatFormFieldModule, MatNativeDateModule} from '@angular/material';
-import { FormsModule } from '@angular/forms';
-
-import Tooltip from 'tooltip.js'
-import { Content } from '@angular/compiler/src/render3/r3_ast';
-
 @Component({
-  selector: 'app-full-calender',
-  templateUrl: './full-calender.component.html',
-  styleUrls: ['./full-calender.component.scss']
+  selector: 'app-calendar',
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.scss']
 })
-export class FullCalenderComponent implements AfterViewInit {
 
-constructor(private eventservice: EventsService, 
-            private zone: NgZone,
-            public dialog: MatDialog,
-            public element: ElementRef
-) { 
-  console.log(this.element.nativeElement);
+export class CalendarComponent implements OnInit, AfterViewInit {
+
+  constructor(private eventservice: EventsService,
+              public dialog: MatDialog,
+              public element: ElementRef) { 
 }
 
-
-
-calendarOptions: OptionsInput;
+  options: OptionsInput;
   events: any;
   lists: any;
   displayEvent: any;
@@ -46,42 +30,35 @@ calendarOptions: OptionsInput;
   popUp: any;
   selections: any;
 
-  @ViewChild('fullcalendar') fullcalendar: CalendarComponent;
+  @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
   @ViewChild('dropremove') checkbox: any;
   @ViewChildren('draggableel') draggable: any;
-  // @ViewChildren(.fc-day-grid-event) tooltips: any;
 
-  ngAfterViewInit() {
-
-this.popUp = false;
-
-setTimeout(()=>{
-
-let weeks: any = elef.querySelectorAll(".fc-row").length;
-      // loop to assign all attributes to DOM elements
-      console.log(weeks);
-
-      var i: number;
-      for(i=0; i<weeks;i++){
-        elef.querySelectorAll(".fc-row")[i].style.zIndex=20-i;     
-        console.log(elef.querySelectorAll(".fc-row")[i]);     
-        console.log("fc row");
-        }
-
-this.refreshToolTips();
-
-  }, 4000)
-
-var elef = this.element.nativeElement;
-
-
-// shows the data is not ready for the css file to use, thus no attr assigned yet
-console.log(this.element.nativeElement.querySelectorAll(".fc-content")[0]);
-this.checkbox.nativeElement.checked = true;
-// console.log(this.draggable._results[0].nativeElement)
-    
-    
-// setTimeout(()=>{console.log(this.draggable._results["0"].nativeElement.innerHTML)}, 4000)
+  ngOnInit() {
+    this.options = {
+      allDayDefault: false,
+      aspectRatio:1.5,
+      allDayText:"All Day",
+      slotLabelFormat:{
+        hour: 'numeric',
+        minute: '2-digit',
+        omitZeroMinute: true,
+        meridiem: 'short'
+      },
+      businessHours: {
+        // days of week. an array of zero-based day of week integers (0=Sunday)
+        daysOfWeek: [ 1, 2, 3, 4 ], // Monday - Thursday
+      
+        startTime: '8:00', // a start time (10am in this example)
+        endTime: '18:00', // an end time (6pm in this example)
+      },
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'timeGridWeek timeGridDay dayGridMonth, listWeek'
+      },
+      plugins: [ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]
+    };
 
 
     this.events = this.eventservice.getData()
@@ -96,130 +73,73 @@ this.checkbox.nativeElement.checked = true;
           }
         );
 
-    this.listings = [{"name":"hi"},{"name":"hey"},{"name":"hello"}]
-    console.log(this.listings);
+    
+
+
+  }
+
+  ngAfterViewInit(){
 
     this.lists = this.eventservice.getListData()
     .subscribe(
           res => {
             console.log(res)
-            
+                
             let arr = [];
-            for (let prop in res){
-              console.log(arr)
-              arr.push(res[prop]);
+              for (let prop in res){
+                  console.log(arr)
+                  arr.push(res[prop]);
             }
-            
+                
             console.log("find new listed jobs");
             this.lists = arr;
             console.log(arr)
-          },
-          err => {
-            console.log("Error occured in loading lists");
-          }
-        );
-
-setTimeout(()=>{
-
-  console.log("why the hell is this not working!");
-console.log(this.draggable._results.length);
-
-    for (var i = 0; i < this.draggable._results.length; i++) {
-      // this.draggable._results[i].nativeElement.draggable = true;
-      // console.log(this.draggable);
-      new Draggable(this.draggable._results[i].nativeElement, {
-      });
-    }
-  }, 4000)
-
-
-    this.calendarOptions = {
-      slotDuration: '00:15:00',
-      // slotLabelInterval: 15,
-      // slotLabelFormat: 'h(:mm)a',
-      
-      slotLabelFormat: {
-        hour: 'numeric',
-        minute: '2-digit',
-        omitZeroMinute: true,
-        meridiem: 'short'
-      },
-      editable: true,
-      eventLimit: false,
-      // titleFormat: 'MMM D YYYY',
-        //  header: {
-        //     left: 'prev,next today myCustomButtons',
-        //     center: 'title',
-        //     right: 'month,week,agendaDay'
-        //  },
-      selectable: true,
-      droppable: true,
-      events: this.events,
-      allDayDefault: false,
-      buttonText: {
-            today: 'Today',
-            month: 'Month',
-            week: 'Week',
-            day: 'Day'
-         },
-         views: {
-            agenda: {
-               eventLimit: 2
+            },
+            err => {
+              console.log("Error occured in loading lists");
             }
-         },
-   
-    //   eventRender: function(info) {
-    //   var tooltip = new Tooltip(info.el, {
-    //     title: info.event.extendedProps.description,
-    //     placement: 'top',
-    //     trigger: 'hover',
-    //     container: 'body'
-    //   });
-    // },
+          );
 
-      // customButtons: {
-      //   myCustomButton: {
-      //     text: 'custom!',
-      //     click: function() {
-      //       alert('clicked the custom button!');
-      //     }
-      //   }
-      // },
+    var elef = this.element.nativeElement;
 
-      nowIndicator: true,
-      // slotLabelFormat:'h(:mm)a',
+    setTimeout(()=>{
 
-      header: {
-        left: 'title',
-        center: 'prev,next today',
-        // right: 'prev,next today'
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-      },
+      let weeks: any = elef.querySelectorAll(".fc-row").length;
+            // loop to assign all attributes to DOM elements
+            console.log(weeks);
+      
+            var i: number;
+            for(i=0; i<weeks;i++){
+              elef.querySelectorAll(".fc-row")[i].style.zIndex=20-i;     
+              console.log(elef.querySelectorAll(".fc-row")[i]);     
+              console.log("fc row");
+              }
+      
+      this.refreshToolTips();
+      
+      }, 4000)
 
-      buttonIcons: {
-        prev: 'left-single-arrow',
-        next: 'right-single-arrow',
-      },
+    setTimeout(()=>{
 
-      plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin ]
-    };
-    
+          console.log("why the hell is this not working!");
+        console.log(this.draggable._results.length);
+        
+            for (var i = 0; i < this.draggable._results.length; i++) {
+              // this.draggable._results[i].nativeElement.draggable = true;
+              // console.log(this.draggable);
+              new Draggable(this.draggable._results[i].nativeElement, {
+              });
+            }
+      }, 4000)
+
   }
-  
-  eventrender(event)
-    {
-      
 
-      console.log(event);
-      
-      // this.refreshToolTips();
+
+// All Methods below:
+
+eventrender(event)
+    {
       console.log("This should mean that the event has been updated in DB, DOM and also in the tooltips");
-      // var el = this.element.nativeElement;
-      // console.log(event);
-      // el.querySelectorAll(".fc-content")[0].setAttribute("data-tooltip", "too!")
-      // el.querySelectorAll("a")[0].setAttribute("aria-label", "Button that displays")
-      // console.log("attributes set");
-      // console.log(el.querySelectorAll("a")[0])
     }
 
 refreshToolTips(){
@@ -407,5 +327,4 @@ console.log("this means I don't require a render method from the click event")
     return dateObj.getUTCFullYear() + '-' + (dateObj.getUTCMonth() + 1);
   }
 }
-
 
