@@ -38,7 +38,7 @@ constructor(private eventservice: EventsService,
 
 
 
-calendarOptions: OptionsInput;
+  calendarOptions: OptionsInput;
   events: any;
   lists: any;
   displayEvent: any;
