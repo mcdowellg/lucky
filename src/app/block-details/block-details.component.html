@@ -17,7 +17,7 @@
                 <input type="text" formControlName="resources">
               </label>
             </div>
-            <button type="submit" [disabled]="!profileForm.valid || !allocatedTasks.length>0">Submit</button>
+            <button type="submit" [disabled]="!profileForm.valid || !(allocatedTasks.length>0)">Submit</button>
           </form>
           <hr>
           <p>

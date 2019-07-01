@@ -193,7 +193,7 @@ refreshToolTips(){
         })
       }
 
-      console.log(el.querySelectorAll(".fc-title")[0].style.zIndex);
+      // console.log(el.querySelectorAll(".fc-title")[0].style.zIndex);
       console.log("an element of DOM");
 
       console.log(el.querySelectorAll(".fc-content"))

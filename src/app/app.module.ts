@@ -7,7 +7,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FullCalenderComponent } from './full-calender/full-calender.component';
+// import { FullCalenderComponent } from './full-calender/full-calender.component';
 // import { FullCalendarModule } from 'ng-fullcalendar'
 import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
 
