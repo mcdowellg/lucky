@@ -33,7 +33,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
   @ViewChild('dropremove') checkbox: any;
-  @ViewChildren('draggableelllllll') draggable: any;
+  @ViewChildren('draggableel') draggable: any;
 
   ngOnInit() {
     this.testEvent = "4:00:00";
@@ -126,29 +126,20 @@ export class CalendarComponent implements OnInit, AfterViewInit {
           console.log("why the hell is this not working!");
         console.log(this.draggable._results[0]);
 
-        new Draggable(this.draggable._results[0].nativeElement, {
-          eventData: {
-            title: 'my event',
-            duration: '02:00'
-          }
-        });
+        // new Draggable(this.draggable._results[0].nativeElement, {
+        //   eventData: {
+        //     title: 'my event',
+        //     duration: '02:00'
+        //   }
+        // });
         
-            // for (var i = 0; i < this.draggable._results.length; i++) {
-            //   // this.draggable._results[i].nativeElement.draggable = true;
-            //   // console.log(this.draggable);
-            //   new Draggable(this.draggable._results[i].nativeElement, {
-            //     eventData: {
-            //       title: 'my event',
-            //       duration: '04:00',
-            //     }
-            //   });
-            //   this.draggable._results[i].nativeElement.dataset = {
-            //     title: 'my event',
-            //     duration: '04:00',
-            //   }
-                console.log(this.draggable);
-            // }
-      }, 4000)
+        for (var i = 0; i < this.draggable._results.length; i++) {
+          // this.draggable._results[i].nativeElement.draggable = true;
+          // console.log(this.draggable);
+          new Draggable(this.draggable._results[i].nativeElement, {
+          });
+        }
+  }, 4000)
 
   }
 
