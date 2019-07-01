@@ -33,7 +33,7 @@ constructor(private eventservice: EventsService,
             public dialog: MatDialog,
             public element: ElementRef
 ) { 
-  console.log(this.element.nativeElement);
+  // console.log(this.element.nativeElement);
 }
 
 
@@ -59,13 +59,13 @@ setTimeout(()=>{
 
 let weeks: any = elef.querySelectorAll(".fc-row").length;
       // loop to assign all attributes to DOM elements
-      console.log(weeks);
+      // console.log(weeks);
 
       var i: number;
       for(i=0; i<weeks;i++){
         elef.querySelectorAll(".fc-row")[i].style.zIndex=20-i;     
-        console.log(elef.querySelectorAll(".fc-row")[i]);     
-        console.log("fc row");
+        // console.log(elef.querySelectorAll(".fc-row")[i]);     
+        // console.log("fc row");
         }
 
 this.refreshToolTips();
@@ -87,7 +87,7 @@ this.checkbox.nativeElement.checked = true;
     this.events = this.eventservice.getData()
     .subscribe(
           res => {
-            console.log(res)
+            // console.log(res)
             console.log("initialise events");
             this.events = res;
           },
@@ -97,32 +97,32 @@ this.checkbox.nativeElement.checked = true;
         );
 
     this.listings = [{"name":"hi"},{"name":"hey"},{"name":"hello"}]
-    console.log(this.listings);
+    // console.log(this.listings);
 
     this.lists = this.eventservice.getListData()
     .subscribe(
           res => {
-            console.log(res)
+            // console.log(res)
             
             let arr = [];
             for (let prop in res){
-              console.log(arr)
+              // console.log(arr)
               arr.push(res[prop]);
             }
             
-            console.log("find new listed jobs");
+            // console.log("find new listed jobs");
             this.lists = arr;
-            console.log(arr)
+            // console.log(arr)
           },
           err => {
-            console.log("Error occured in loading lists");
+            // console.log("Error occured in loading lists");
           }
         );
 
 setTimeout(()=>{
 
-  console.log("why the hell is this not working!");
-console.log(this.draggable._results.length);
+//   console.log("why the hell is this not working!");
+// console.log(this.draggable._results.length);
 
     for (var i = 0; i < this.draggable._results.length; i++) {
       // this.draggable._results[i].nativeElement.draggable = true;
@@ -210,10 +210,10 @@ console.log(this.draggable._results.length);
     {
       
 
-      console.log(event);
+      // console.log(event);
       
       // this.refreshToolTips();
-      console.log("This should mean that the event has been updated in DB, DOM and also in the tooltips");
+      // console.log("This should mean that the event has been updated in DB, DOM and also in the tooltips");
       // var el = this.element.nativeElement;
       // console.log(event);
       // el.querySelectorAll(".fc-content")[0].setAttribute("data-tooltip", "too!")
@@ -251,14 +251,14 @@ refreshToolTips(){
         })
       }
 
-      console.log(el.querySelectorAll(".fc-title")[0].style.zIndex);
-      console.log("an element of DOM");
+      // console.log(el.querySelectorAll(".fc-title")[0].style.zIndex);
+      // console.log("an element of DOM");
 
-      console.log(el.querySelectorAll(".fc-content"))
+      // console.log(el.querySelectorAll(".fc-content"))
       this.popUp = true;
-      console.log("fccontent");
-      console.log(this.events);
-      console.log("event content");
+      // console.log("fccontent");
+      // console.log(this.events);
+      // console.log("event content");
 
       // console.log(el.querySelectorAll("a")[0].setAttribute("mattooltip", "tooltips is here now!"))
         }, 1000)
@@ -273,8 +273,8 @@ refreshToolTips(){
 
   eventClick(model) {
     this.displayEvent = model.event._calendar.component.props.currentDate;
-    console.log(model.event.extendedProps._id);
-    console.log("clicking event");
+    // console.log(model.event.extendedProps._id);
+    // console.log("clicking event");
     // want to include a pop up screen here to allow the event to be modified
     // this.popUp = true;
     let dialog = this.dialog.open(ChoosePeopleMachinesComponent);
@@ -284,18 +284,18 @@ refreshToolTips(){
         if (selection) {
           this.selections = selection;
           // selections here is an array of those items selected
-          console.log(this.selections);
-          // next want to patch this info to DB
-          console.log("patch testing");
-          console.log(model.event.extendedProps._id);
+          // console.log(this.selections);
+          // // next want to patch this info to DB
+          // console.log("patch testing");
+          // console.log(model.event.extendedProps._id);
               this.eventservice.updateEvent(model.event.extendedProps._id, {
               "Staff": this.selections[1],
               "Machine": this.selections[0]
                 })
                 .subscribe(
                 res => {
-                  console.log(res);
-                  console.log("update events");
+                  // console.log(res);
+                  // console.log("update events");
                   //this.events = this.events.concat();
                   
                   console.log(this.events);
@@ -314,12 +314,12 @@ refreshToolTips(){
 
 // this.refreshToolTips();
 
-console.log("this means I don't require a render method from the click event")
+// console.log("this means I don't require a render method from the click event")
   }
   eventDragStop(model) {
     this.events = this.events.concat();
-    console.log("are we here?")
-    console.log(model.event._calendar.component.props.currentDate);
+    // console.log("are we here?")
+    // console.log(model.event._calendar.component.props.currentDate);
   }
   dateClick(model) {
     console.log(model);
@@ -329,7 +329,8 @@ console.log("this means I don't require a render method from the click event")
   }
 
   dropped(model) {
-
+    console.log("dropped here 0000000000000000000000000000000000000");
+    console.log(model);
     this.eventservice.PostEvent({
     "title": model.draggedEl.innerHTML,
     "start": model.dateStr

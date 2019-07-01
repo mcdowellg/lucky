@@ -9,11 +9,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class EventsService {
 
-eventsUrl = 'https://gmcdnodeapp.azurewebsites.net/events';
-  eventUrl = 'https://gmcdnodeapp.azurewebsites.net/event/';
-  listURL = 'https://gmcdnodeapp.azurewebsites.net/lists';
-  gpsUrl = 'https://gmcdnodeapp.azurewebsites.net/gps';
-  blockUrl = 'https://gmcdnodeapp.azurewebsites.net/blocks';
+eventsUrl = 'https://nodeappvitiplanning.azurewebsites.net/events';
+  eventUrl = 'https://nodeappvitiplanning.azurewebsites.net/event/';
+  listURL = 'https://nodeappvitiplanning.azurewebsites.net/lists';
+  gpsUrl = 'https://nodeappvitiplanning.azurewebsites.net/gps';
+  blockUrl = 'https://nodeappvitiplanning.azurewebsites.net/blocks';
 
   
   event: any;

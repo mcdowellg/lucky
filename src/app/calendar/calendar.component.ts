@@ -29,12 +29,14 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   listings:any;
   popUp: any;
   selections: any;
+  testEvent: any;
 
   @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
   @ViewChild('dropremove') checkbox: any;
-  @ViewChildren('draggableel') draggable: any;
+  @ViewChildren('draggableelllllll') draggable: any;
 
   ngOnInit() {
+    this.testEvent = "4:00:00";
     this.options = {
       allDayDefault: false,
       aspectRatio:1.5,
@@ -122,20 +124,40 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     setTimeout(()=>{
 
           console.log("why the hell is this not working!");
-        console.log(this.draggable._results.length);
+        console.log(this.draggable._results[0]);
+
+        new Draggable(this.draggable._results[0].nativeElement, {
+          eventData: {
+            title: 'my event',
+            duration: '02:00'
+          }
+        });
         
-            for (var i = 0; i < this.draggable._results.length; i++) {
-              // this.draggable._results[i].nativeElement.draggable = true;
-              // console.log(this.draggable);
-              new Draggable(this.draggable._results[i].nativeElement, {
-              });
-            }
+            // for (var i = 0; i < this.draggable._results.length; i++) {
+            //   // this.draggable._results[i].nativeElement.draggable = true;
+            //   // console.log(this.draggable);
+            //   new Draggable(this.draggable._results[i].nativeElement, {
+            //     eventData: {
+            //       title: 'my event',
+            //       duration: '04:00',
+            //     }
+            //   });
+            //   this.draggable._results[i].nativeElement.dataset = {
+            //     title: 'my event',
+            //     duration: '04:00',
+            //   }
+                console.log(this.draggable);
+            // }
       }, 4000)
 
   }
 
 
 // All Methods below:
+
+eventReceive(event){
+  console.log("the event has been received.....................................................................................................................................................................................................................")
+}
 
 eventrender(event)
     {
@@ -249,7 +271,7 @@ console.log("this means I don't require a render method from the click event")
   }
 
   dropped(model) {
-
+    console.log(model);
     this.eventservice.PostEvent({
     "title": model.draggedEl.innerHTML,
     "start": model.dateStr
@@ -289,7 +311,7 @@ console.log("this means I don't require a render method from the click event")
     this.eventservice.updateEvent(model.event.extendedProps._id, {
         "start": model.event.start,
         "end": model.event.end,
-        "allDay": true,
+        "allDay": false,
         "Staff": model.event.Staff,
         "Machine": model.event.Machine
     })
