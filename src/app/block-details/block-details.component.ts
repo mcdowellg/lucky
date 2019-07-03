@@ -79,7 +79,6 @@ export class BlockDetailsComponent implements OnInit {
                           event.currentIndex);
       }
       this.allocatedTasks = event.container.data;
-      // console.log(this.allocatedTasks.length>0)
     }
   }
   
