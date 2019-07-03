@@ -5,8 +5,12 @@
 
 <p>
   <li class = 'drag' #draggableel *ngFor="let list of lists">
-    {{list.UniqID}} 
-    
+    {{list.Tasks[0].taskName }}
+    <p hidden>/</p>
+    <p hidden>
+    {{list.Tasks[0].rates.speed}} 
+    </p>
+
     <!-- {{list._id}} -->
   </li>
 <!-- <div cdkDrag>move</div> -->

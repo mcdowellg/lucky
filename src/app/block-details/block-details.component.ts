@@ -39,7 +39,19 @@ export class BlockDetailsComponent implements OnInit {
     // Combine input data to create a group task that can then be imported into the calendar script.
     console.warn("Submitting data");
     this.details = [this.profileForm.value, this.allocatedTasks];
-    console.log(this.details)
+    console.log(this.details);
+    // Now want to post this data to the Tasks model in DB
+    this.eventservice.postTaskData({
+      "Tasks": this.details
+      })
+      .subscribe(
+            res => {
+              console.log("posted task");
+            },
+            err => {
+              console.log("Error occured");
+            }
+      );
   }
 
        scheduledTasks:any = [];
