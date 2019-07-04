@@ -144,8 +144,6 @@ export class CalendarComponent implements OnInit, AfterViewInit {
               console.log("...think once the task has been brought through via a data transfer, as a service, or temporary array (not great as lost everytime browser is refreshed), then can pass variables from the task, (using a lookup on the draggable element text), into eventData which will provide the values upon drop through the eventReceive(), meaning eventReceive should then update the DB via data service rather than through the use of dropped() as used previously.")
               console.log(eventEl)
 
-              
-              
               console.log(eventEl.innerText)
               
               // this.lists.map((obj, index) => {
