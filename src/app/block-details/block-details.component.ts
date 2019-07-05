@@ -15,6 +15,9 @@ export class BlockDetailsComponent implements OnInit {
   constructor(private eventservice: EventsService, private fb: FormBuilder) {};
 
   details: any = [];
+  row_kms: any = [];
+  total_vines: any = [];
+  row_numbers: any = [];
 
     profileForm = this.fb.group({
     taskName: ['', Validators.required],
@@ -37,14 +40,36 @@ export class BlockDetailsComponent implements OnInit {
 
   onSubmit() {
     // Combine input data to create a group task that can then be imported into the calendar script.
-    console.warn("Submitting data");
 
-    // here we should calculate RowKMs for the selected blocks - this will then be used along with the rates to calculate the duration
+    // Get row kms, turns and vines
 
-    // now we can then calculate the duration
+    var row_kms = Number(this.calculations.reduce(function(accumulator, currentValue, currentIndex, array) {
+      return accumulator + Number(currentValue['Row_KM']);
+    },0));
+
+    var row_numbers = this.calculations.reduce(function(accumulator, currentValue, currentIndex, array) {
+      return accumulator + Number(currentValue['Row_Numbers']);
+    },0);
+
+    var total_vines = this.calculations.reduce(function(accumulator, currentValue, currentIndex, array) {
+      return accumulator + Number(currentValue['Total_Vines']);
+    },0);
+
+    // Now calculate duration
+
+    // Duration equals (distance/speed)/machines
 
 
-    this.details = [this.profileForm.value, this.allocatedTasks, this.calculations];
+    var speed  = Number(this.profileForm.value.rates.speed);
+    var resources = Number(this.profileForm.value.rates.resources);
+
+    console.warn(resources);
+
+    var duration = (row_kms/speed)/resources;
+
+    console.warn(this.calculations);
+
+    this.details = [this.profileForm.value, this.allocatedTasks, duration, row_kms, row_numbers, total_vines];
     console.log(this.details);
     // Now want to post this data to the Tasks model in DB
     this.eventservice.postTaskData({

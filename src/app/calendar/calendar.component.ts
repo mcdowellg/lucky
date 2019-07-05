@@ -142,9 +142,10 @@ export class CalendarComponent implements OnInit, AfterViewInit {
             
             eventData: function(eventEl) {
               console.log("...think once the task has been brought through via a data transfer, as a service, or temporary array (not great as lost everytime browser is refreshed), then can pass variables from the task, (using a lookup on the draggable element text), into eventData which will provide the values upon drop through the eventReceive(), meaning eventReceive should then update the DB via data service rather than through the use of dropped() as used previously.")
-              console.log(eventEl)
+              console.log(eventEl.innerHTML)
+              console.log(eventEl.innerHTML.split(">")[1])
 
-              console.log(eventEl.innerText)
+              console.log(Number(eventEl.innerHTML.split(">")[1].split(" <")[0]))
               
               // this.lists.map((obj, index) => {
               //   console.log(obj);
@@ -157,8 +158,9 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
               return {
                 title: eventEl.innerText,
-                duration: { hours: Number(eventEl.innerHTML.split(">")[3].split(" <")[0]) }, 
-                machine: "Greg's the man"
+                duration: { hours: Number(eventEl.innerHTML.split(">")[1].split(" <")[0]) },
+                Row_KMs:  Number(eventEl.innerHTML.split(">")[3].split(" <")[0]),
+                Resource: "Can add whatever else we like here"
               };
             }
             

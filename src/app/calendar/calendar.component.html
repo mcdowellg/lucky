@@ -5,10 +5,13 @@
 
 <p>
   <li class = 'drag' #draggableel *ngFor="let list of lists">
-    {{list.Tasks[0].taskName }}
-    <p hidden>/</p>
+      {{list.Tasks[0].taskName }}
+    <!-- <p hidden>/</p> -->
     <p hidden>
-    {{list.Tasks[0].rates.speed}} 
+      {{list.Tasks[2]}} 
+    </p>
+    <p hidden>
+      {{list.Tasks[3]}} 
     </p>
 
     <!-- {{list._id}} -->
