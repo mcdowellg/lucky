@@ -51,11 +51,12 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       },
       businessHours: {
         // days of week. an array of zero-based day of week integers (0=Sunday)
-        daysOfWeek: [ 1, 2, 3, 4 ], // Monday - Thursday
+        daysOfWeek: [ 1, 2, 3, 4, 5], // Monday - Thursday
       
-        startTime: '8:00', // a start time (10am in this example)
+        startTime: '8:00', // a start time (8am in this example)
         endTime: '18:00', // an end time (6pm in this example)
       },
+      selectConstraint: "businessHours",
       header: {
         left: 'prev,next today',
         center: 'title',
