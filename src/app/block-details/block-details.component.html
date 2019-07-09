@@ -20,6 +20,10 @@
                             Number of Resources:
                             <input type="text" formControlName="resources">
                           </label>
+                          <label>
+                            Hours Worked:
+                            <input type="text" formControlName="hoursWorked">
+                          </label>
                         </div>
                         
 
@@ -32,7 +36,7 @@
                         Form Status: {{ profileForm.status }}
                       </p>
                       <p>
-                        <button (click)="updateProfile()">Generic Task</button>
+                        <button type="button" (click)="updateProfile()">Generic Task</button>
                       </p> 
 
                 </div>

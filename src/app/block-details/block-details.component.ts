@@ -18,13 +18,15 @@ export class BlockDetailsComponent implements OnInit {
   row_kms: any = [];
   total_vines: any = [];
   row_numbers: any = [];
+  change: boolean;
 
     profileForm = this.fb.group({
     taskName: ['', Validators.required],
     
       rates: this.fb.group({
       speed: ['', [Validators.min(1), Validators.max(20)]],
-      resources: ['', [Validators.min(1), Validators.max(200)]]
+      resources: ['', [Validators.min(1), Validators.max(200)]],
+      hoursWorked: ['', [Validators.min(1), Validators.max(20)]]
     })
   });
 
@@ -33,9 +35,11 @@ export class BlockDetailsComponent implements OnInit {
       taskName: 'Generic Task',
       rates: {
         speed: 7.5,
-        resources: 8
+        resources: 8,
+        hoursWorked: 9,
       }
     });
+    this.change = false;
   }
 
   onSubmit() {
@@ -62,6 +66,7 @@ export class BlockDetailsComponent implements OnInit {
 
     var speed  = Number(this.profileForm.value.rates.speed);
     var resources = Number(this.profileForm.value.rates.resources);
+    var hoursWorked = Number(this.profileForm.value.rates.hoursWorked);
 
     console.warn(resources);
 
@@ -69,9 +74,11 @@ export class BlockDetailsComponent implements OnInit {
 
     console.warn(this.calculations);
 
-    this.details = [this.profileForm.value, this.allocatedTasks, duration, row_kms, row_numbers, total_vines];
+    this.details = [this.profileForm.value, this.allocatedTasks, duration, row_kms, row_numbers, total_vines, hoursWorked];
     console.log(this.details);
     // Now want to post this data to the Tasks model in DB
+    console.log(this.change)
+    if(this.change = true){
     this.eventservice.postTaskData({
       "Tasks": this.details
       })
@@ -83,7 +90,7 @@ export class BlockDetailsComponent implements OnInit {
               console.log("Error occured");
             }
       );
-  }
+  }}
 
        scheduledTasks:any = [];
 

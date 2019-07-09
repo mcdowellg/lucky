@@ -157,11 +157,14 @@ export class CalendarComponent implements OnInit, AfterViewInit {
               //   } 
               // })
 
+              var hours = Number(eventEl.innerHTML.split(">")[1].split(" <")[0]);
+              var hoursPerDay = Number(eventEl.innerHTML.split(">")[5].split(" <")[0])
+
               return {
                 title: eventEl.innerText,
-                duration: { hours: Number(eventEl.innerHTML.split(">")[1].split(" <")[0]) },
+                duration: { hours: hours + Math.ceil(hours/hoursPerDay)*(24-hoursPerDay) },
                 Row_KMs:  Number(eventEl.innerHTML.split(">")[3].split(" <")[0]),
-                Resource: "Can add whatever else we like here"
+                HoursWorked: hours 
               };
             }
             
@@ -177,12 +180,18 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 eventReceive(event){
   console.log("the event has been received.... Now need to post to DB")
   console.log(event)
-///////////////////////////////////////////////////////
+
+  // need to adjust event dates to represent the true length of tasks then refresh events in the screen
+
+  var hoursOfWork = event.event.extendedProps.HoursWorked;
+  var startDay = new Date(event.event.start).getDay; 
+
+  console.log(new Date(Date.parse(event.event.end) + 87.5*60*60*1000))
   
   this.eventservice.PostEvent({
   "title": event.draggedEl.innerText, 
-  "start": event.event.start, 
-  "end": event.event.end
+  "start": new Date('Wed Jul 01 2019 00:00:00 GMT+1200'), 
+  "end": new Date(event.event.end)
   
   })
   .subscribe(
