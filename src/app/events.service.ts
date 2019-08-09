@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
@@ -36,12 +36,23 @@ date = Date.now();
 getTaskData():Observable<any> {
   return this.http.get<any>(this.tasksUrl);
 }
+// myEvents = new BehaviorSubject([]);
+
+// onInit() {
+//   this.service.myEvents.subscribe(this.data)
+// }
 
 postTaskData(eventPassed: any):Observable<any> {
   // console.log(eventPassed);
   console.log("is anything happening?");
   return this.http.post<any>(this.tasksUrl, eventPassed);
 }
+
+// postTaskData(eventPassed: any):Observable<any> {
+//   // console.log(eventPassed);
+//   console.log("is anything happening?");
+//   this.http.post<any>(this.tasksUrl, eventPassed).subscribe(data => this.myEvents.next(data));
+// }
 
 getListData():Observable<any> {
             this.list = this.http.get<any>(this.listURL);

@@ -26,7 +26,9 @@ export class BlockDetailsComponent implements OnInit {
       rates: this.fb.group({
       speed: ['', [Validators.min(1), Validators.max(20)]],
       resources: ['', [Validators.min(1), Validators.max(200)]],
-      hoursWorked: ['', [Validators.min(1), Validators.max(20)]]
+      hoursWorked: ['', [Validators.min(1), Validators.max(20)]],
+      start: [''],
+      end: ['']
     })
   });
 
@@ -37,6 +39,8 @@ export class BlockDetailsComponent implements OnInit {
         speed: 7.5,
         resources: 8,
         hoursWorked: 9,
+        start: 8,
+        end: 16
       }
     });
     this.change = false;
@@ -67,6 +71,10 @@ export class BlockDetailsComponent implements OnInit {
     var speed  = Number(this.profileForm.value.rates.speed);
     var resources = Number(this.profileForm.value.rates.resources);
     var hoursWorked = Number(this.profileForm.value.rates.hoursWorked);
+    var start = Number(this.profileForm.value.rates.start);
+    var end = Number(this.profileForm.value.rates.end);
+
+
 
     console.warn(resources);
 
@@ -74,7 +82,7 @@ export class BlockDetailsComponent implements OnInit {
 
     console.warn(this.calculations);
 
-    this.details = [this.profileForm.value, this.allocatedTasks, duration, row_kms, row_numbers, total_vines, hoursWorked];
+    this.details = [this.profileForm.value, this.allocatedTasks, duration, row_kms, row_numbers, total_vines, hoursWorked, start, end];
     console.log(this.details);
     // Now want to post this data to the Tasks model in DB
     console.log(this.change)

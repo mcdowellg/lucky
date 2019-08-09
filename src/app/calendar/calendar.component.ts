@@ -82,6 +82,8 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(){
 
+    // "ngAfterViewContent"
+
     this.lists = this.eventservice.getTaskData()
     .subscribe(
           res => {
@@ -143,8 +145,8 @@ export class CalendarComponent implements OnInit, AfterViewInit {
             
             eventData: function(eventEl) {
               console.log("...think once the task has been brought through via a data transfer, as a service, or temporary array (not great as lost everytime browser is refreshed), then can pass variables from the task, (using a lookup on the draggable element text), into eventData which will provide the values upon drop through the eventReceive(), meaning eventReceive should then update the DB via data service rather than through the use of dropped() as used previously.")
+              console.log(eventEl)
               console.log(eventEl.innerHTML)
-              console.log(eventEl.innerHTML.split(">")[1])
 
               console.log(Number(eventEl.innerHTML.split(">")[1].split(" <")[0]))
               
@@ -158,13 +160,29 @@ export class CalendarComponent implements OnInit, AfterViewInit {
               // })
 
               var hours = Number(eventEl.innerHTML.split(">")[1].split(" <")[0]);
-              var hoursPerDay = Number(eventEl.innerHTML.split(">")[5].split(" <")[0])
+              var startTime = Number(eventEl.innerHTML.split(">")[7].split(" <")[0]);
+              var endTime = Number(eventEl.innerHTML.split(">")[9].split(" <")[0]);
+              var hoursPerDay = Number(eventEl.innerHTML.split(">")[9].split(" <")[0]) - Number(eventEl.innerHTML.split(">")[7].split(" <")[0])
+              var dur = hours + Math.floor(hours/hoursPerDay)*(24-hoursPerDay)
+
+
+              console.log(startTime)
+              console.log(endTime)
+              console.log(hours)
+              console.log(hoursPerDay)
+              console.log(dur)
+              console.log(Math.floor(hours/hoursPerDay)*(24-hoursPerDay))
 
               return {
                 title: eventEl.innerText,
-                duration: { hours: hours + Math.ceil(hours/hoursPerDay)*(24-hoursPerDay) },
+                
+                duration: { hours: dur },
                 Row_KMs:  Number(eventEl.innerHTML.split(">")[3].split(" <")[0]),
-                HoursWorked: hours 
+                HoursWorked: hours,
+                startTime: {hours: startTime},
+                // duration: {hours: 26},
+                startingTime: startTime,
+                endTime: endTime
               };
             }
             
@@ -182,20 +200,52 @@ eventReceive(event){
   console.log(event)
 
   // need to adjust event dates to represent the true length of tasks then refresh events in the screen
-
+  var t = 0;
   var hoursOfWork = event.event.extendedProps.HoursWorked;
-  var startDay = new Date(event.event.start).getDay; 
+  var hoursLeftInDay = event.event.extendedProps.endTime - Number(new Date(event.event.start).getHours()) ;
+  var dayLength = event.event.extendedProps.endTime - event.event.extendedProps.startingTime;
+  var nightLength = 24 - dayLength;
 
-  console.log(new Date(Date.parse(event.event.end) + 87.5*60*60*1000))
+  console.log(hoursOfWork)
+  console.log(event.event.extendedProps.endTime)
+  console.log(event.event.start.getHours())
+  console.log(event.event.extendedProps.startingTime)
+  console.log("---------")
+  console.log(hoursLeftInDay)
+  console.log(dayLength)
+  console.log(nightLength)
+
+  if(hoursLeftInDay<hoursOfWork){
+    t = t + nightLength;
+    hoursOfWork = hoursOfWork - hoursLeftInDay;
+  }
+  while(dayLength<hoursOfWork){
+    t = t + nightLength;
+    hoursOfWork = hoursOfWork - dayLength;
+  }
+
+  var nonWorkMilliSec = t*60*60*1000;
+  var hoursWorkedMilliSec = event.event.extendedProps.HoursWorked*60*60*1000;
+
+  var startDay = new Date(event.event.start)//.getDay(); 
+
+  console.log(t)
+  console.log(event.event.end)
+  console.log(new Date(Date.parse(event.event.start) + Date.parse(event.event.extendedProps.HoursWorked) + nonWorkMilliSec))
   
   this.eventservice.PostEvent({
   "title": event.draggedEl.innerText, 
-  "start": new Date('Wed Jul 01 2019 00:00:00 GMT+1200'), 
-  "end": new Date(event.event.end)
+  // "start": new Date(event.event.start), 
+  "start": new Date(Date.parse(event.event.start)),
+  "end": new Date(Date.parse(event.event.start) + hoursWorkedMilliSec + nonWorkMilliSec)
   
   })
   .subscribe(
         res => {
+          // var this.event = [res]
+
+          // this.events = [...res];
+
           // console.log(res[0]);
           console.log("post events");
           
@@ -320,7 +370,7 @@ refreshToolTips(){
 console.log("this means I don't require a render method from the click event")
   }
   eventDragStop(model) {
-    this.events = this.events.concat();
+    // this.events = this.events.concat();
     console.log("are we here?")
     // console.log(model.event._calendar.component.props.currentDate);
   }
@@ -329,10 +379,12 @@ console.log("this means I don't require a render method from the click event")
   }
   drop(model) {
     console.log(model);
+    // this.events = this.events.concat();
   }
 
   dropped(model) {
     console.log("This is now redundant as all actions should have an eventData included - all the steps below have been moved to the eventReceive method above");
+    this.events = this.events.concat();
     // this.eventservice.PostEvent({
     // "title": model.draggedEl.innerHTML,
     // "start": model.dateStr
