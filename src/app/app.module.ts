@@ -34,6 +34,7 @@ import { BlockDetailsComponent } from './block-details/block-details.component';
 import { BlockDragComponent } from './block-details/block-drag/block-drag.component';
 import { TaskInputComponent } from './block-details/task-input/task-input.component';
 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { TaskInputComponent } from './block-details/task-input/task-input.compon
     MatSelectModule,
     MatTooltipModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
     
   ],
   providers: [DatePipe],

@@ -37,7 +37,14 @@
 </div>
 </nav>
 
-<article>
+<div class="progress-loader" [hidden]="rerender">
+ 
+  <mat-progress-spinner [mode]="'indeterminate'">
+  </mat-progress-spinner>
+
+</div>
+
+<article *ngIf="rerender">
   <full-calendar
     *ngIf="options"
     #fullcalendar
@@ -46,12 +53,14 @@
     [allDayText]="options.allDayText"
     [editable]= true
         [timeZone]= 'UTC'
-        [defaultView]= 'timeGridWeek'
+        [defaultView]= "options.defaultView"
         minTime='08:00:00'
         maxTime= '16:00:00'
         [allDaySlot]= true
         [nowIndicator]= true
     [slotLabelFormat]="options.slotLabelFormat"
+    [slotDuration]="options.slotDuration"
+    [slotLabelInterval]="options.slotLabelInterval"
     [businessHours]="options.businessHours" 
     [selectConstraint]="options.selectConstraint"   
     [weekends]=true
