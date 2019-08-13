@@ -3,7 +3,14 @@
   
   <strong> Scheduled Jobs </strong>
 
-<p>
+  <div class="schedule-loader" [hidden]="scheduleComponentReady">
+ 
+    <mat-progress-spinner [diameter]="30" [mode]="'indeterminate'">
+    </mat-progress-spinner>
+  
+  </div>
+
+<p *ngIf="scheduleComponentReady">
   <li class = 'drag' #draggableel *ngFor="let list of lists">
       {{list.Tasks[0].taskName }}
     <!-- <p hidden>/</p> -->

@@ -19,6 +19,7 @@ export class BlockDetailsComponent implements OnInit {
   total_vines: any = [];
   row_numbers: any = [];
   change: boolean;
+  scheduleComponentReady: boolean;
 
     profileForm = this.fb.group({
     taskName: ['', Validators.required],
@@ -103,6 +104,7 @@ export class BlockDetailsComponent implements OnInit {
        scheduledTasks:any = [];
 
     ngOnInit() {
+      this.scheduleComponentReady = false;
       this.scheduledTasks = this.eventservice.getListData()
     .subscribe(
           res => {
@@ -117,6 +119,7 @@ export class BlockDetailsComponent implements OnInit {
             console.log("find new listed jobs");
             this.scheduledTasks = arr;
             console.log(arr)
+            this.scheduleComponentReady = true;
           },
           err => {
             console.log("Error occured in loading lists");

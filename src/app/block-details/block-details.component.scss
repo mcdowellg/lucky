@@ -1,3 +1,15 @@
+.schedule-loader {
+  position: relative;
+  margin-left: 40%;
+  margin-right: 50%;
+  margin-top: 20%; 
+}
+
+.mat-progress-spinner::ng-deep circle {
+  stroke: rgb(108, 143, 209);
+}
+
+
 .inline-flex-parent {
     display: inline-flex;
   }

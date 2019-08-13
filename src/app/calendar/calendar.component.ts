@@ -36,6 +36,7 @@ myEvents = new BehaviorSubject([]);
   selections: any;
   testEvent: any;
   view: any;
+  scheduleComponentReady: boolean;
 
   @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
   @ViewChild('dropremove') checkbox: any;
@@ -45,6 +46,7 @@ myEvents = new BehaviorSubject([]);
 
   ngOnInit() {
     this.rerender=true;
+    this.scheduleComponentReady=false;
     let data = sessionStorage.getItem('key');
     console.log(data)
     
@@ -122,6 +124,9 @@ myEvents = new BehaviorSubject([]);
             console.log("find new listed jobs");
             this.lists = arr;
             console.log(arr)
+
+            // Then once the list is available
+            setupDraggables();
             },
             err => {
               console.log("Error occured in loading lists");
@@ -149,7 +154,7 @@ myEvents = new BehaviorSubject([]);
       
       }, 4000)
 
-    setTimeout(()=>{
+    const setupDraggables = ()=>{
 
           console.log("why the hell is this not working!");
         // console.log(this.draggable._results[0]);
@@ -211,8 +216,9 @@ myEvents = new BehaviorSubject([]);
             }
             
           });
+          this.scheduleComponentReady = true;
         // }
-  }, 8000)
+  };
 
   }
 
@@ -476,17 +482,29 @@ console.log("this means I don't require a render method from the click event")
 
   //       })    
 
+        // Need to ensure the start can not be before the startingtime for the day. 
+        console.log(model.event.start.getHours() + model.event.start.getMinutes()/60)
+        var currentTime = model.event.start.getHours() + model.event.start.getMinutes()/60
+        
+        var addHours = 0;
+        if (model.event.start.getHours() < model.event.extendedProps.startingTime || model.event.start.getHours() > model.event.extendedProps.endTime){
+          console.log("should print if start is before startingtime")
+          addHours = model.event.extendedProps.startingTime - (currentTime)
+          if(addHours<0){addHours = addHours+24}
+          
+        }
+        console.log(addHours)
         hoursOfWork = model.event.extendedProps.hoursOfWork
         console.log("---------")
-        hoursLeftInDay = model.event.extendedProps.endTime - Number(new Date(model.event.start).getHours())
+        hoursLeftInDay = model.event.extendedProps.endTime - currentTime + addHours
         dayLength = model.event.extendedProps.endTime - model.event.extendedProps.startingTime
         nightLength = 24 - dayLength
 
-        console.log(hoursOfWork)
-        console.log("---------")
-        console.log(hoursLeftInDay)
-        console.log(dayLength)
-        console.log(nightLength)
+        // console.log(hoursOfWork)
+        // console.log("---------")
+        // console.log(hoursLeftInDay)
+        // console.log(dayLength)
+        // console.log(nightLength)
       
         if(hoursLeftInDay<hoursOfWork){
           t = t + nightLength;
@@ -497,25 +515,27 @@ console.log("this means I don't require a render method from the click event")
           hoursOfWork = hoursOfWork - dayLength;
         }
         
-        console.log(t + hoursOfWork)
+        // console.log(t + hoursOfWork)
         
         var nonWorkMilliSec = t*60*60*1000;
         var hoursWorkedMilliSec = model.event.extendedProps.hoursOfWork*60*60*1000;
 
-        console.log(new Date(Date.parse(model.event.start)))
-        console.log(new Date(Date.parse(model.event.start) + hoursWorkedMilliSec + nonWorkMilliSec))
-    
+        console.log("start: " + new Date(Date.parse(model.event.start) + addHours*60*60*1000))
+        console.log("end: " + new Date(Date.parse(model.event.start + addHours*60*60*1000 + addHours*60*60*1000) + hoursWorkedMilliSec + nonWorkMilliSec))
+        console.log("addHours: " + addHours)
+        console.log("hoursOfWork: " + hoursOfWork)
+        console.log("non worked: " + t)
     
     this.eventservice.updateEvent(model.event.extendedProps._id, {
-        "start": model.event.start,
-        "end": new Date(Date.parse(model.event.start) + hoursWorkedMilliSec + nonWorkMilliSec),
+        "start": new Date(Date.parse(model.event.start) + addHours*60*60*1000),
+        "end": new Date(Date.parse(model.event.start) + addHours*60*60*1000 + hoursWorkedMilliSec + nonWorkMilliSec),
         "allDay": false,
         "Staff": model.event.Staff,
         "Machine": model.event.Machine
     })
     .subscribe(
           res => {
-            console.log(res);
+            // console.log(res);
             console.log("update events");
             // this.events = this.events.concat(res);
 
@@ -527,7 +547,7 @@ console.log("this means I don't require a render method from the click event")
             
             this.events.map((obj, index) => {
               if(res._id === obj._id) {
-                console.log("showme the money");
+                // console.log("showme the money");
                 // console.log(index);
                 this.events[index] = res
               } 
