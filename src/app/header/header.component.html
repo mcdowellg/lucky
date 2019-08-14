@@ -27,6 +27,11 @@
       <li class="nav-item">
     <a class="nav-link" routerLink="map-chart"> Map </a>
       </li>
+
+    <input type="search" class="navbar-brand" id="site-search" name="q"
+          aria-label="Search through site content" (keyup)="onKey($event)">
+    
+    <!-- <button class="navbar-brand" id="site-search">Search</button> -->
       
     </ul>
     

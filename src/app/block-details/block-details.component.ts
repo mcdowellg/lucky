@@ -1,8 +1,9 @@
-  import {Component, OnInit } from '@angular/core';
+  import {Component, OnInit, Input } from '@angular/core';
   import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
   import { EventsService } from '../events.service'
   import { FormBuilder } from '@angular/forms';
   import { Validators } from '@angular/forms';  
+  import { SearchServiceService } from '../search-service.service';
 
 @Component({
   selector: 'app-block-details',
@@ -12,7 +13,7 @@
 
 export class BlockDetailsComponent implements OnInit {
 
-  constructor(private eventservice: EventsService, private fb: FormBuilder) {};
+  constructor(private eventservice: EventsService, private fb: FormBuilder, private search: SearchServiceService) {};
 
   details: any = [];
   row_kms: any = [];
@@ -20,6 +21,7 @@ export class BlockDetailsComponent implements OnInit {
   row_numbers: any = [];
   change: boolean;
   scheduleComponentReady: boolean;
+  searchData: string;
 
     profileForm = this.fb.group({
     taskName: ['', Validators.required],
@@ -105,6 +107,11 @@ export class BlockDetailsComponent implements OnInit {
 
     ngOnInit() {
       this.scheduleComponentReady = false;
+      this.search.data.subscribe(data => {
+        console.log("1: is anything coming into here?: " + data)
+        this.searchData = data
+        console.log("2: is anything coming into here?: " + this.searchData)
+      })
       this.scheduledTasks = this.eventservice.getListData()
     .subscribe(
           res => {

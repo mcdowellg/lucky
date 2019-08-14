@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { SearchServiceService } from '../search-service.service'; 
 
 @Component({
   selector: 'app-header',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  values = '';
+
+  onKey(event: any) { // without type info
+    this.values = event.target.value;
+    console.warn(event.target.value);
+    this.search.updateData(this.values);
+  }
+
+  constructor(private search: SearchServiceService) { }
 
   ngOnInit() {
   }

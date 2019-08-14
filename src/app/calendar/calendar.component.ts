@@ -37,6 +37,7 @@ myEvents = new BehaviorSubject([]);
   testEvent: any;
   view: any;
   scheduleComponentReady: boolean;
+  editable: boolean;
 
   @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
   @ViewChild('dropremove') checkbox: any;
@@ -45,20 +46,22 @@ myEvents = new BehaviorSubject([]);
   
 
   ngOnInit() {
+    this.editable=true;
     this.rerender=true;
     this.scheduleComponentReady=false;
     let data = sessionStorage.getItem('key');
     console.log(data)
     
-    this.myEvents.subscribe(res => this.events = res);
+    // this.myEvents.subscribe(res => this.events = res.concat({}));
 
     this.testEvent = "4:00:00";
     this.options = {
+      editable: this.editable,
       defaultView: data,
       allDayDefault: false,
-      aspectRatio:1.5,
+      aspectRatio:2.25,
       allDayText:"All Day",
-      slotDuration: "00:30:00",
+      slotDuration: "00:20:00",
       slotLabelInterval: "01:00",
       slotLabelFormat:{
         hour: 'numeric',
@@ -406,6 +409,8 @@ console.log("this means I don't require a render method from the click event")
   eventDragStop(model) {
     // this.events = this.events.concat();
     console.log("are we here?")
+    this.editable=false;
+    console.log(this.editable)
     // this.rerender=false;
     // this.rerender=true;
     // console.log(model.event._calendar.component.props.currentDate);
@@ -456,6 +461,7 @@ console.log("this means I don't require a render method from the click event")
   }
 
   updateEvent(model: any) {
+    this.editable = false;
     console.log("or are we here?");
     console.log(model);
     // console.log(model.event.extendedProps._id);
@@ -521,14 +527,25 @@ console.log("this means I don't require a render method from the click event")
         var hoursWorkedMilliSec = model.event.extendedProps.hoursOfWork*60*60*1000;
 
         console.log("start: " + new Date(Date.parse(model.event.start) + addHours*60*60*1000))
-        console.log("end: " + new Date(Date.parse(model.event.start + addHours*60*60*1000 + addHours*60*60*1000) + hoursWorkedMilliSec + nonWorkMilliSec))
+        console.log("end: " + new Date(Date.parse(model.event.start) + addHours*60*60*1000 + hoursWorkedMilliSec + nonWorkMilliSec))
         console.log("addHours: " + addHours)
         console.log("hoursOfWork: " + hoursOfWork)
         console.log("non worked: " + t)
+
+        var endingTime;
+        if(addHours>0){
+          endingTime = new Date(Date.parse(model.event.start) + addHours*60*60*1000 + hoursWorkedMilliSec + nonWorkMilliSec);
+        } 
+        else {
+          endingTime = new Date(Date.parse(model.event.end));
+        }
+
+        console.log(endingTime);
     
     this.eventservice.updateEvent(model.event.extendedProps._id, {
         "start": new Date(Date.parse(model.event.start) + addHours*60*60*1000),
-        "end": new Date(Date.parse(model.event.start) + addHours*60*60*1000 + hoursWorkedMilliSec + nonWorkMilliSec),
+        "end": endingTime,
+        // "end": new Date(Date.parse(model.event.start) + addHours*60*60*1000 + hoursWorkedMilliSec + nonWorkMilliSec),
         "allDay": false,
         "Staff": model.event.Staff,
         "Machine": model.event.Machine
@@ -538,7 +555,7 @@ console.log("this means I don't require a render method from the click event")
             // console.log(res);
             console.log("update events");
             // this.events = this.events.concat(res);
-
+            
         //   let array = Object
         // .entries(res)
         // // .map(([key, value]) => ({ [key]: value }))
@@ -555,8 +572,10 @@ console.log("this means I don't require a render method from the click event")
             // this.events.map(obj => res._id === obj._id);
             // console.log(this.events);
             this.rerender=true;
-            this.refreshToolTips();
+            // this.refreshToolTips();
             this.events = this.events.concat({});
+            // this.myEvents.next(this.events)
+            this.editable = true;
           },
           err => {
             console.log("Error occured");
