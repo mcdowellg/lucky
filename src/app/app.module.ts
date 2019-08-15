@@ -35,6 +35,7 @@ import { BlockDragComponent } from './block-details/block-drag/block-drag.compon
 import { TaskInputComponent } from './block-details/task-input/task-input.component';
 
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { SearchPipePipe } from './search-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     BlockDetailsComponent,
     BlockDragComponent,
     TaskInputComponent,
+    SearchPipePipe,
     
    
   ],

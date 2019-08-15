@@ -10,6 +10,7 @@ import { MatDialog} from '@angular/material';
 import { ChoosePeopleMachinesComponent } from '../choose-people-machines/choose-people-machines.component';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HtmlParser } from '@angular/compiler';
+import { SearchServiceService } from '../search-service.service';
 
 @Component({
   selector: 'app-calendar',
@@ -21,7 +22,8 @@ export class CalendarComponent implements OnInit, AfterViewInit , AfterContentIn
 
   constructor(private eventservice: EventsService,
               public dialog: MatDialog,
-              public element: ElementRef) { 
+              public element: ElementRef,
+              public search: SearchServiceService) { 
 }
 
 myEvents = new BehaviorSubject([]);
@@ -38,6 +40,8 @@ myEvents = new BehaviorSubject([]);
   view: any;
   scheduleComponentReady: boolean;
   editable: boolean;
+  eventsWithFilter: any;
+  
 
   @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
   @ViewChild('dropremove') checkbox: any;
@@ -85,6 +89,18 @@ myEvents = new BehaviorSubject([]);
       plugins: [ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]
     };
 
+    this.events = [];
+    this.eventsWithFilter = this.events;
+
+    this.search.data.subscribe(search => {
+      console.log(search)
+      console.log(this.events)
+      console.log(this.eventsWithFilter.filter(data => data.title == "Everything"))
+      this.events.filter(data => console.log(data.title))
+      this.events.filter(data => console.log(data.title.includes(search)))
+      this.eventsWithFilter = this.events.filter(data => data.title.toLowerCase().includes(search))
+      console.log(this.eventsWithFilter)
+})
 
     this.events = this.eventservice.getData()
     .subscribe(
@@ -92,23 +108,30 @@ myEvents = new BehaviorSubject([]);
             // console.log(res)
             console.log("initialise events");
             this.events = res;
+            this.eventsWithFilter = this.events;
+            console.log(this.events.filter(data => data.title.includes("M18")))
           },
           err => {
             console.log("Error occured");
           }
         );
 
+        
+
+    
+
   }
 
   ngAfterContentInit(){
     this.myEvents.subscribe(res => this.events = res);
-    console.log(this.view)
-
+    console.log(this.events)
+    this.events.filter(data => data)
+    console.log(this.events.filter(data => data))
   }
 
   ngAfterViewInit(){
     console.log(this.view)
-
+    console.log(this.events)
     // "ngAfterViewContent"
 
     this.myEvents.subscribe(res => this.events = res);
@@ -287,15 +310,18 @@ eventReceive(event){
     console.log("response from post request");  
   console.log(res);
   console.log(this.events);
-  
   this.events = this.events.concat(res);
+  console.log(this.events);
+  this.eventsWithFilter = this.events;
+  this.eventsWithFilter.filter(data=>console.log(data));
   this.rerender=true;
   },    err => {console.log("Error occured in post action");}
   )
   
   // this.events = this.events.concat({});
   this.refreshToolTips();
-  this.events = this.events.concat({});
+  this.events = [...this.events];
+  this.eventsWithFilter = this.events;
   
 
   
@@ -573,7 +599,10 @@ console.log("this means I don't require a render method from the click event")
             // console.log(this.events);
             this.rerender=true;
             // this.refreshToolTips();
-            this.events = this.events.concat({});
+            console.log(this.events)
+            this.events = [...this.events];
+            console.log(this.events)
+            this.eventsWithFilter = this.events;
             // this.myEvents.next(this.events)
             this.editable = true;
           },
