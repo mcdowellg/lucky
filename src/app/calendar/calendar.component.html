@@ -61,6 +61,7 @@
     [editable]= "options.editable"
         [timeZone]= 'UTC'
         [defaultView]= "options.defaultView"
+        [defaultDate]= "options.defaultDate"
         minTime='08:00:00'
         maxTime= '16:00:00'
         [allDaySlot]= true
@@ -79,7 +80,7 @@
     (eventClick)="eventClick($event)"
     (drop)="dropped($event)"  
     (eventDrop)="updateEvent($event)"
-    (eventResize)="updateEvent($event)" 
+    (eventResize)="eventResize($event)" 
     (clickButton)="clickButton($event)"
     (eventReceive)="eventReceive($event)"
   ></full-calendar>

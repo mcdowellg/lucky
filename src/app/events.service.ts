@@ -45,7 +45,7 @@ getTaskData():Observable<any> {
 
 postTaskData(eventPassed: any):Observable<any> {
   // console.log(eventPassed);
-  console.log("is anything happening?");
+  // console.log("is anything happening?");
   return this.http.post<any>(this.tasksUrl, eventPassed);
 }
 
@@ -57,19 +57,19 @@ postTaskData(eventPassed: any):Observable<any> {
 
 getListData():Observable<any> {
             this.list = this.http.get<any>(this.listURL);
-            console.log(this.list);
+            // console.log(this.list);
             return this.list;
   }
 
 getBlockData():Observable<any> {
     this.blocks = this.http.get<any>(this.blockUrl);
-    console.log(this.blocks);
+    // console.log(this.blocks);
     return this.blocks;
 }
 
 getData():Observable<any> {
             this.event = this.http.get<any>(this.eventsUrl);
-            console.log(this.event);
+            // console.log(this.event);
             return this.event;
   }
 
@@ -78,8 +78,8 @@ getGPSData():Observable<any> {
 }
 
 PostEvent(eventPassed: any):Observable<any> {
-        console.log(eventPassed);
-        console.log("is anything happening?");
+        // console.log(eventPassed);
+        // console.log("is anything happening?");
         return this.http.post<any>(this.eventsUrl, eventPassed);
         
   }
