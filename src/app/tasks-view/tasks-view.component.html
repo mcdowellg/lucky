@@ -1,0 +1,18 @@
+<!-- <li *ngFor= "let list of lists">
+  {{ list.Tasks[1][0][0]}}
+</li> -->
+
+<p *ngIf= "ready">
+  <tr *ngFor="let list of listsFiltered">
+      {{list.Tasks[0].taskName}}
+      <div>
+          Block Order
+           
+    <li *ngFor="let task of list.Tasks[1]">
+      
+      {{task.UniqID}}
+    </li>
+      </div> 
+  </tr>
+
+</p>

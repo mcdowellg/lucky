@@ -104,8 +104,8 @@ myEvents = new BehaviorSubject([]);
       // console.log(this.eventsWithFilter.filter(data => data.title == "Everything"))
       // this.events.filter(data => console.log(data.title))
       // this.events.filter(data => console.log(data.title.includes(search)))
-      this.eventsWithFilter = this.events.filter(data => data.title.toLowerCase().includes(search))
-      // console.log(this.eventsWithFilter)
+      this.eventsWithFilter = this.events.filter(data => data.title.toLowerCase().includes(search.toLowerCase()))
+      console.log(this.eventsWithFilter)
 })
 
     this.events = this.eventservice.getData()
@@ -155,13 +155,13 @@ myEvents = new BehaviorSubject([]);
                 
             console.log("find new listed jobs");
             this.lists = arr;
-            // console.log(arr)
+            console.log(this.lists)
 
             // Then once the list is available
             setupDraggables();
             },
             err => {
-              console.log("Error occured in loading lists");
+              console.log("Error occurred in loading lists");
             }
           );
 
@@ -169,22 +169,22 @@ myEvents = new BehaviorSubject([]);
             
     var elef = this.element.nativeElement;
 
-    setTimeout(()=>{
+    // setTimeout(()=>{
 
-      let weeks: any = elef.querySelectorAll(".fc-row").length;
-            // loop to assign all attributes to DOM elements
-            // console.log(weeks);
+    //   let weeks: any = elef.querySelectorAll(".fc-row").length;
+    //         // loop to assign all attributes to DOM elements
+    //         // console.log(weeks);
       
-            var i: number;
-            for(i=0; i<weeks;i++){
-              elef.querySelectorAll(".fc-row")[i].style.zIndex=20-i;     
-              // console.log(elef.querySelectorAll(".fc-row")[i]);     
-              // console.log("fc row");
-              }
+    //         var i: number;
+    //         for(i=0; i<weeks;i++){
+    //           elef.querySelectorAll(".fc-row")[i].style.zIndex=20-i;     
+    //           // console.log(elef.querySelectorAll(".fc-row")[i]);     
+    //           // console.log("fc row");
+    //           }
       
-      this.refreshToolTips();
+    //   this.refreshToolTips();
       
-      }, 4000)
+    //   }, 4000)
 
     const setupDraggables = ()=>{
 

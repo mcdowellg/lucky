@@ -104,6 +104,7 @@ export class BlockDetailsComponent implements OnInit {
   }}
 
        scheduledTasks:any = [];
+       scheduledTasksFiltered:any = [];
 
     ngOnInit() {
       this.scheduleComponentReady = false;
@@ -111,7 +112,11 @@ export class BlockDetailsComponent implements OnInit {
         console.log("1: is anything coming into here?: " + data)
         this.searchData = data
         console.log("2: is anything coming into here?: " + this.searchData)
+        // Also want to update scheduled tasks to show only filtered search data
+        this.scheduledTasksFiltered = this.scheduledTasks.filter(input => input.UniqID.toLowerCase().includes(data.toLowerCase()))
+        // console.log(this.scheduledTasksFiltered)
       })
+
       this.scheduledTasks = this.eventservice.getListData()
     .subscribe(
           res => {
@@ -119,13 +124,14 @@ export class BlockDetailsComponent implements OnInit {
             
             let arr = [];
             for (let prop in res){
-              console.log(arr)
+              // console.log(arr)
               arr.push(res[prop]);
             }
             
             console.log("find new listed jobs");
             this.scheduledTasks = arr;
-            console.log(arr)
+            this.scheduledTasksFiltered = this.scheduledTasks;
+            // console.log(this.scheduledTasksFiltered)
             this.scheduleComponentReady = true;
           },
           err => {
@@ -141,14 +147,40 @@ export class BlockDetailsComponent implements OnInit {
       console.log(event);
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      } else {
+        console.log(event)
+      } else if(event.container.id == "cdk-drop-list-0")  {
         transferArrayItem(event.previousContainer.data,
                           event.container.data,
                           event.previousIndex,
                           event.currentIndex);
+        console.warn("When dropped from bottom to top")
+        console.log(event.previousContainer.data)
+        console.log(event.container.data)
+        console.log(event.previousIndex)
+        console.log(event.currentIndex)
+        // this.allocatedTasks = event.container.data;
+        this.scheduledTasksFiltered = event.container.data;
+        this.allocatedTasks = event.previousContainer.data;
+        
       }
-      this.allocatedTasks = event.container.data;
+        else {
+          transferArrayItem(event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex);
+        console.warn("When dropped from top to bottom")
+        console.log(event.previousContainer.data)
+        console.log(event.container.data)
+        console.log(event.previousIndex)
+        console.log(event.currentIndex)
+        this.allocatedTasks = event.container.data;
+        this.scheduledTasksFiltered = event.previousContainer.data;
+        }
+      
+      this.scheduledTasks = [...this.scheduledTasks];
+      this.scheduledTasksFiltered = [...this.scheduledTasksFiltered];
       console.log(this.allocatedTasks);
+      console.log(this.scheduledTasks);
       // here we need to undertake the calculations before it is submitted to the calendar schedule
       this.calculations = this.allocatedTasks; // find or map or filter to get values for RowKMs and Row Numbers for turn time, make calculations and provide back to this.details!
     }

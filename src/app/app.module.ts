@@ -36,6 +36,7 @@ import { TaskInputComponent } from './block-details/task-input/task-input.compon
 
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { SearchPipePipe } from './search-pipe.pipe';
+import { TasksViewComponent } from './tasks-view/tasks-view.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { SearchPipePipe } from './search-pipe.pipe';
     BlockDragComponent,
     TaskInputComponent,
     SearchPipePipe,
+    TasksViewComponent,
     
    
   ],
@@ -64,7 +66,11 @@ import { SearchPipePipe } from './search-pipe.pipe';
   {
 		path: "block-details", 
 		component: BlockDetailsComponent
-	},
+  },
+  {
+		path: "task-view", 
+		component: TasksViewComponent
+  },
 	{
 		path: "data-table", 
 		component: DataTableComponent

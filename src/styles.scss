@@ -61,27 +61,27 @@ li {
    opacity: 0;
 }
 
-.fc-content::after {
-  opacity: 0;
-  position: absolute;
-  top: 0px;
-  left: -5px;
-  background-color:rgb(176, 183, 187);
-  border-radius: 5px;
-  color: #fff;
-  content: attr(data-tooltip);
-  white-space: pre-wrap;;
-  padding: 1rem;
-  text-transform: none;
-  -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-  width: 87%;
-  height: 40px;
-  font-size: 8px;
-  /* opacity: 10; */
-  pointer-events: none;
-  /* z-index: 10; */
-}
+// .fc-content::after {
+//   opacity: 0;
+//   position: absolute;
+//   top: 0px;
+//   left: -5px;
+//   background-color:rgb(176, 183, 187);
+//   border-radius: 5px;
+//   color: #fff;
+//   content: attr(data-tooltip);
+//   white-space: pre-wrap;;
+//   padding: 1rem;
+//   text-transform: none;
+//   -webkit-transition: all 0.5s ease;
+//   transition: all 0.5s ease;
+//   width: 87%;
+//   height: 40px;
+//   font-size: 8px;
+//   /* opacity: 10; */
+//   pointer-events: none;
+//   /* z-index: 10; */
+// }
 
 .fc-content:hover::before 
 {
