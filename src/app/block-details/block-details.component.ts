@@ -107,14 +107,20 @@ export class BlockDetailsComponent implements OnInit {
        scheduledTasksFiltered:any = [];
 
     ngOnInit() {
+      
       this.scheduleComponentReady = false;
       this.search.data.subscribe(data => {
         console.log("1: is anything coming into here?: " + data)
         this.searchData = data
-        console.log("2: is anything coming into here?: " + this.searchData)
+        var splitData = data.split(' ')
+        console.log(splitData)
+        console.log(this.scheduledTasksFiltered)
         // Also want to update scheduled tasks to show only filtered search data
-        this.scheduledTasksFiltered = this.scheduledTasks.filter(input => input.UniqID.toLowerCase().includes(data.toLowerCase()))
-        // console.log(this.scheduledTasksFiltered)
+        if (splitData[1]) this.scheduledTasksFiltered = this.scheduledTasksFiltered.filter(input => (input.UniqID.toLowerCase().includes(splitData[0].toLowerCase()) && input.UniqID.toLowerCase().includes(splitData[1].toLowerCase()))) 
+            // (input.UniqID.toLowerCase().includes(splitData[0].toLowerCase()) && input.UniqID.toLowerCase().includes(splitData[1].toLowerCase()))) 
+        else this.scheduledTasksFiltered = this.scheduledTasks.filter(input => input.UniqID.toLowerCase().includes(splitData[0].toLowerCase()))
+        console.log(this.scheduledTasksFiltered)
+
       })
 
       this.scheduledTasks = this.eventservice.getListData()

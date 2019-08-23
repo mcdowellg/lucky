@@ -65,7 +65,7 @@
                               [cdkDropListData]="scheduledTasksFiltered"
                               class="example-list"
                               (cdkDropListDropped)="drop($event)">
-                              <div class="example-box" *ngFor="let item of scheduledTasksFiltered | searchPipe: searchData" cdkDrag>{{item.UniqID}}</div>
+                              <div class="example-box" *ngFor="let item of scheduledTasksFiltered" cdkDrag>{{item.UniqID}}</div>
                             </div>
                           </div>
                         

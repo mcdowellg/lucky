@@ -23,8 +23,11 @@ export class TasksViewComponent implements OnInit {
       this.searchData = data
       console.log("2: is anything coming into here?: " + this.searchData)
       // Also want to update scheduled tasks to show only filtered search data
-      this.listsFiltered = this.lists.filter(input => 
-        input.Tasks[0].taskName.toLowerCase().includes(data.toLowerCase()))
+      this.listsFiltered = this.lists.filter(input => {
+        console.warn(String(input.Tasks[0].taskName).toLowerCase())
+        String(input.Tasks[0].taskName).toLowerCase().includes(data.toLowerCase())
+        
+      })
       this.listsFiltered = [...this.listsFiltered];
       console.log(this.listsFiltered)
     })
@@ -44,7 +47,7 @@ export class TasksViewComponent implements OnInit {
             this.lists = arr;
             console.log(this.lists)
 
-            this.listsFiltered = this.listsFiltered;
+            this.listsFiltered = this.lists;
             this.ready = true;
 
             // Have added this in here to ensure the search data is retained... needs a review :)
@@ -54,8 +57,9 @@ export class TasksViewComponent implements OnInit {
               this.searchData = data
               console.log("2: is anything coming into here?: " + this.searchData)
               // Also want to update scheduled tasks to show only filtered search data
+              console.log(this.listsFiltered)
               this.listsFiltered = this.lists.filter(input => 
-                input.Tasks[0].taskName.toLowerCase().includes(data.toLowerCase()))
+                String(input.Tasks[0].taskName).toLowerCase().includes(data.toLowerCase()))
               this.listsFiltered = [...this.listsFiltered];
               console.log(this.listsFiltered)
             })

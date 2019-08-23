@@ -9,8 +9,10 @@
           Block Order
            
     <li *ngFor="let task of list.Tasks[1]">
+      <span [style.background-color]="task.colour">
+        {{task.UniqID}}
+      </span>
       
-      {{task.UniqID}}
     </li>
       </div> 
   </tr>
