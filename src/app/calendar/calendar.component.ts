@@ -41,6 +41,9 @@ myEvents = new BehaviorSubject([]);
   scheduleComponentReady: boolean;
   editable: boolean;
   eventsWithFilter: any;
+  holiday: any;
+  isbackground = '';
+  isAllDay = false;
   
 
   @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
@@ -53,15 +56,6 @@ myEvents = new BehaviorSubject([]);
     this.editable=true;
     this.rerender=true;
     this.scheduleComponentReady=false;
-    // let data = sessionStorage.getItem('key');
-    // let dates = new Date(sessionStorage.getItem('dates'));
-    // console.log("___---------------------___________------------------____________________----------------------")
-    // console.log(data)
-    // console.log(dates)
-    // console.log(dates.getUTCFullYear())
-    
-    
-    // this.myEvents.subscribe(res => this.events = res.concat({}));
 
     this.testEvent = "4:00:00";
     this.options = {
@@ -220,19 +214,27 @@ myEvents = new BehaviorSubject([]);
               //   } 
               // })
 
+              
+
               var hours = Number(eventEl.innerHTML.split(">")[1].split(" <")[0]);
               var startTime = Number(eventEl.innerHTML.split(">")[7].split(" <")[0]);
               var endTime = Number(eventEl.innerHTML.split(">")[9].split(" <")[0]);
               var hoursPerDay = Number(eventEl.innerHTML.split(">")[9].split(" <")[0]) - Number(eventEl.innerHTML.split(">")[7].split(" <")[0])
               var dur = hours + Math.floor(hours/hoursPerDay)*(24-hoursPerDay)
 
-
-              // console.log(startTime)
-              // console.log(endTime)
-              // console.log(hours)
-              // console.log(hoursPerDay)
+              console.log(eventEl.innerText == "Holiday Event")
+              console.log(eventEl)
+              // console.log(endTime)      
+              // console.log(hours)        
+              // console.log(hoursPerDay)  
               // console.log(dur)
               // console.log(Math.floor(hours/hoursPerDay)*(24-hoursPerDay))
+              
+
+              if(eventEl.innerText == "Holiday Event") {
+                this.isbackground = 'background';
+                this.isAllDay = true;
+              } else {this.isAllDay = false}
 
               return {
                 title: eventEl.innerText,
@@ -243,7 +245,9 @@ myEvents = new BehaviorSubject([]);
                 startTime: {hours: startTime},
                 // duration: {hours: 26},
                 startingTime: startTime,
-                endTime: endTime
+                endTime: endTime,
+                isAllDay: this.isAllDay,
+                rendering: this.isbackground
               };
             }
             
@@ -260,15 +264,13 @@ myEvents = new BehaviorSubject([]);
 eventReceive(event){
   // console.log("the event has been received.... Now need to post to DB")
   // console.log(event.view.el.outerHTML.includes("timeGridWeek-view"))
-  // console.log(event)
+  console.log(event)
   // console.log(this.fullcalendar)
   sessionStorage.setItem('key', event.view.type);
   sessionStorage.setItem('dates', event.event.start);
 
   this.options.defaultView =  event.view.type
   this.options.defaultDate = event.event.start
-
-  
 
   // need to adjust event dates to represent the true length of tasks then refresh events in the screen
   var t = 0;
@@ -301,10 +303,11 @@ eventReceive(event){
   var startDay = new Date(event.event.start)//.getDay(); 
 
   // console.log(t)
-  // console.log(event.event)
+  console.log(event.event.extendedProps.isAllDay, event.event.rendering)
   // console.log(new Date(Date.parse(event.event.start) + hoursWorkedMilliSec + nonWorkMilliSec))
   
   this.rerender=false;
+  
 
   this.eventservice.PostEvent({
   "title": event.draggedEl.innerText, 
@@ -312,6 +315,9 @@ eventReceive(event){
   "start": new Date(Date.parse(event.event.start)),
   "end": new Date(Date.parse(event.event.start) + hoursWorkedMilliSec + nonWorkMilliSec),
   "color": 'rgba(130,137,165, 0.4)',
+  "rendering": event.event.rendering,
+  "backgroundColor": 'rgba(130,137,165, 0.4)',
+  "allDay": event.event.extendedProps.isAllDay,
   "extendedProps": {
   "hoursOfWork": event.event.extendedProps.HoursWorked,
   "startingTime": event.event.extendedProps.startingTime,
@@ -567,7 +573,7 @@ refreshToolTips(){
         
           endingTime = new Date(Date.parse(model.event.start) + addHours*60*60*1000 + hoursWorkedMilliSec + nonWorkMilliSec);
 
-        // console.log(endingTime);
+        console.log(endingTime);
     
     this.eventservice.updateEvent(model.event.extendedProps._id, {
         "start": new Date(Date.parse(model.event.start) + addHours*60*60*1000),
@@ -575,13 +581,13 @@ refreshToolTips(){
         // "end": new Date(Date.parse(model.event.start) + addHours*60*60*1000 + hoursWorkedMilliSec + nonWorkMilliSec),
         "allDay": false,
         "Staff": model.event.Staff,
-        "Machine": model.event.Machine,
-        "color": 'rgba(68,90,176, 0.4)'
+        "Machine": model.event.Machine
+        // ,"color": 'rgba(68,90,176, 0.4)'
     })
     .subscribe(
           res => {
             // console.log(res);
-            console.log("update events");
+            console.log("update events here");
             // this.events = this.events.concat(res);
             
         //   let array = Object

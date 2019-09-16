@@ -2,7 +2,7 @@
   {{ list.Tasks[1][0][0]}}
 </li> -->
 
-<p *ngIf= "ready">
+<!-- <p *ngIf= "ready">
   <tr *ngFor="let list of listsFiltered">
       {{list.Tasks[0].taskName}}
       <div>
@@ -17,4 +17,29 @@
       </div> 
   </tr>
 
-</p>
+</p> -->
+
+<div class='child'>
+  <span cdkDropListGroup>
+      <div class="example-container">
+        <h2>Scheduled Tasks</h2>
+    
+        <div *ngFor="let list of listsFiltered"
+          cdkDropList
+          [cdkDropListData]="list.Tasks[1]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)">
+          <h4>{{list.Tasks[0].taskName}}</h4>
+          <div class="example-box" *ngFor="let list of list.Tasks[1]" cdkDrag> 
+              <span [style.background-color]="list.colour">
+                  {{list.UniqID}}
+              </span>
+          </div>
+        
+          
+        </div>
+      </div>
+    
+    </span>
+
+</div>

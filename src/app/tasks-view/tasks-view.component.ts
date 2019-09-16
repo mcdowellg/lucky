@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EventsService } from '../events.service';
 import { SearchServiceService } from '../search-service.service';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-tasks-view',
@@ -69,7 +71,48 @@ export class TasksViewComponent implements OnInit {
               console.log("Error occurred in loading lists");
             }
           );
+  }
 
+  allocatedTasks = [];
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(event);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      console.log(event)
+    } else if(event.container.id == "cdk-drop-list-0")  {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+      console.warn("When dropped from bottom to top")
+      console.log(event.previousContainer.data)
+      console.log(event.container.data)
+      console.log(event.previousIndex)
+      console.log(event.currentIndex)
+      // this.allocatedTasks = event.container.data;
+      // this.listsFiltered = event.container.data;
+      // this.allocatedTasks = event.previousContainer.data;
+      console.log(this.listsFiltered)
+    }
+      else {
+        transferArrayItem(event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex);
+      console.warn("When dropped from top to bottom")
+      console.log(event.previousContainer.data)
+      console.log(event.container.data)
+      console.log(event.previousIndex)
+      console.log(event.currentIndex)
+      // this.allocatedTasks = event.container.data;
+      // this.listsFiltered = event.previousContainer.data;
+      }
+    
+    this.listsFiltered = [...this.listsFiltered];
+    console.log(this.allocatedTasks);
+    console.log(this.listsFiltered);
+    // here we need to undertake the calculations before it is submitted to the calendar schedule
   }
 
 }
