@@ -44,6 +44,7 @@ myEvents = new BehaviorSubject([]);
   holiday: any;
   isbackground = '';
   isAllDay = false;
+  overLapAllowed = true;
   
 
   @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
@@ -234,7 +235,12 @@ myEvents = new BehaviorSubject([]);
               if(eventEl.innerText == "Holiday Event") {
                 this.isbackground = 'background';
                 this.isAllDay = true;
-              } else {this.isAllDay = false}
+                this.overLapAllowed = false;
+              } else {
+                this.isbackground = '';
+                this.isAllDay = false;
+                this.overLapAllowed = true;
+              }
 
               return {
                 title: eventEl.innerText,
@@ -247,7 +253,8 @@ myEvents = new BehaviorSubject([]);
                 startingTime: startTime,
                 endTime: endTime,
                 isAllDay: this.isAllDay,
-                rendering: this.isbackground
+                rendering: this.isbackground,
+                overlap: this.overLapAllowed
               };
             }
             
@@ -303,7 +310,7 @@ eventReceive(event){
   var startDay = new Date(event.event.start)//.getDay(); 
 
   // console.log(t)
-  console.log(event.event.extendedProps.isAllDay, event.event.rendering)
+  console.log(event.event.extendedProps.overLapAllowed, event.event.rendering)
   // console.log(new Date(Date.parse(event.event.start) + hoursWorkedMilliSec + nonWorkMilliSec))
   
   this.rerender=false;
@@ -318,6 +325,7 @@ eventReceive(event){
   "rendering": event.event.rendering,
   "backgroundColor": 'rgba(130,137,165, 0.4)',
   "allDay": event.event.extendedProps.isAllDay,
+  "overlap": event.event.overlap,
   "extendedProps": {
   "hoursOfWork": event.event.extendedProps.HoursWorked,
   "startingTime": event.event.extendedProps.startingTime,

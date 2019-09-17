@@ -11,7 +11,8 @@ export class EventsService {
 
   eventsUrl = 'https://nodeappvitiplanning.azurewebsites.net/events';
   eventUrl = 'https://nodeappvitiplanning.azurewebsites.net/event/';
-  listURL = 'https://nodeappvitiplanning.azurewebsites.net/lists';
+  listsURL = 'https://nodeappvitiplanning.azurewebsites.net/lists';
+  taskURL = 'https://nodeappvitiplanning.azurewebsites.net/task/';
   gpsUrl = 'https://nodeappvitiplanning.azurewebsites.net/gps';
   blockUrl = 'https://nodeappvitiplanning.azurewebsites.net/blocks';
   tasksUrl = 'https://nodeappvitiplanning.azurewebsites.net/tasks';
@@ -49,6 +50,13 @@ postTaskData(eventPassed: any):Observable<any> {
   return this.http.post<any>(this.tasksUrl, eventPassed);
 }
 
+PostEvent(eventPassed: any):Observable<any> {
+  // console.log(eventPassed);
+  // console.log("is anything happening?");
+  return this.http.post<any>(this.eventsUrl, eventPassed);
+  
+}
+
 // postTaskData(eventPassed: any):Observable<any> {
 //   // console.log(eventPassed);
 //   console.log("is anything happening?");
@@ -56,10 +64,14 @@ postTaskData(eventPassed: any):Observable<any> {
 // }
 
 getListData():Observable<any> {
-            this.list = this.http.get<any>(this.listURL);
+            this.list = this.http.get<any>(this.listsURL);
             // console.log(this.list);
             return this.list;
   }
+
+updateTask(eventChange: any): Observable<any> {
+    return this.http.post<any>(this.tasksUrl, eventChange)
+    }
 
 getBlockData():Observable<any> {
     this.blocks = this.http.get<any>(this.blockUrl);
@@ -77,12 +89,6 @@ getGPSData():Observable<any> {
     return this.http.get<any>(this.gpsUrl);
 }
 
-PostEvent(eventPassed: any):Observable<any> {
-        // console.log(eventPassed);
-        // console.log("is anything happening?");
-        return this.http.post<any>(this.eventsUrl, eventPassed);
-        
-  }
 
 updateEvent(id: any, eventChange: any): Observable<any> {
     return this.http.patch<any>(this.eventUrl + id, eventChange)

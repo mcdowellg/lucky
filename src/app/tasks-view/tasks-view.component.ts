@@ -110,9 +110,33 @@ export class TasksViewComponent implements OnInit {
       }
     
     this.listsFiltered = [...this.listsFiltered];
-    console.log(this.allocatedTasks);
+    console.log(this.listsFiltered.length);
     console.log(this.listsFiltered);
-    // here we need to undertake the calculations before it is submitted to the calendar schedule
+    // Finally we need to send the info back into the DB
+
+    var Tasks = this.listsFiltered[0].Tasks 
+
+    this.eventservice.postTaskData(
+      {Tasks}
+      ).subscribe( res => {
+        // console.log("response from post request");  
+      },    err => {console.log("Error occured in post action");}
+      )
+
+    // this.eventservice.postTaskData({
+    //   "Tasks": this.listsFiltered
+    //   })
+    //   .subscribe(
+    //         res => {
+    //           console.log("posted task");
+    //         },
+    //         err => {
+    //           console.log("Error occured");
+    //         }
+    //   );
+
+
+
   }
 
 }
