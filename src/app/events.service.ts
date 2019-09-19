@@ -16,6 +16,7 @@ export class EventsService {
   gpsUrl = 'https://nodeappvitiplanning.azurewebsites.net/gps';
   blockUrl = 'https://nodeappvitiplanning.azurewebsites.net/blocks';
   tasksUrl = 'https://nodeappvitiplanning.azurewebsites.net/tasks';
+  deletetasksUrl = 'https://nodeappvitiplanning.azurewebsites.net/tasks/delete';
 
   
   event: any;
@@ -69,8 +70,8 @@ getListData():Observable<any> {
             return this.list;
   }
 
-updateTask(eventChange: any): Observable<any> {
-    return this.http.post<any>(this.tasksUrl, eventChange)
+deleteTask(): Observable<any> {
+    return this.http.get<any>(this.deletetasksUrl)
     }
 
 getBlockData():Observable<any> {

@@ -114,14 +114,31 @@ export class TasksViewComponent implements OnInit {
     console.log(this.listsFiltered);
     // Finally we need to send the info back into the DB
 
-    var Tasks = this.listsFiltered[0].Tasks 
-
-    this.eventservice.postTaskData(
-      {Tasks}
+    this.eventservice.deleteTask(
       ).subscribe( res => {
         // console.log("response from post request");  
       },    err => {console.log("Error occured in post action");}
       )
+
+    var a = 0;
+    var tasksArray = [];
+    while(a<this.listsFiltered.length){
+    var Tasks = this.listsFiltered[a].Tasks 
+      a = a + 1;
+    console.warn(Tasks)
+    tasksArray.push({Tasks})
+    }
+
+    console.warn(tasksArray)
+
+    this.eventservice.postTaskData(
+      tasksArray
+      ).subscribe( res => {
+        console.log(res)
+        // console.log("response from post request");  
+      },    err => {console.log("error");}
+      )
+
 
     // this.eventservice.postTaskData({
     //   "Tasks": this.listsFiltered
@@ -134,8 +151,6 @@ export class TasksViewComponent implements OnInit {
     //           console.log("Error occured");
     //         }
     //   );
-
-
 
   }
 
