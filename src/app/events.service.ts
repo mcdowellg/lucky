@@ -45,6 +45,13 @@ getTaskData():Observable<any> {
 //   this.service.myEvents.subscribe(this.data)
 // }
 
+updateTaskData(id: any, eventPassed: any):Observable<any> {
+  // console.log(eventPassed);
+  // console.log("is anything happening?");
+  return this.http.post<any>(this.taskURL + id, eventPassed);
+}
+
+
 postTaskData(eventPassed: any):Observable<any> {
   // console.log(eventPassed);
   // console.log("is anything happening?");

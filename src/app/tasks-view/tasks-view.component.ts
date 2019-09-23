@@ -111,33 +111,48 @@ export class TasksViewComponent implements OnInit {
     
     this.listsFiltered = [...this.listsFiltered];
     console.log(this.listsFiltered.length);
-    console.log(this.listsFiltered);
+    console.log(this.listsFiltered._id);
     // Finally we need to send the info back into the DB
 
-    this.eventservice.deleteTask(
-      ).subscribe( res => {
-        // console.log("response from post request");  
-      },    err => {console.log("Error occured in post action");}
-      )
+    // this.eventservice.deleteTask(
+    //   ).subscribe( res => {
+    //     // console.log("response from post request");  
+    //   },    err => {console.log("Error occured in post action");}
+    //   )
+
+    // var a = 0;
+    // var tasksArray = [];
+    // while(a<this.listsFiltered.length){
+    // var Tasks = this.listsFiltered[a].Tasks 
+    //   a = a + 1;
+    // console.warn(Tasks)
+    // tasksArray.push({Tasks})
+    // }
+
+    // console.warn(tasksArray)
 
     var a = 0;
     var tasksArray = [];
     while(a<this.listsFiltered.length){
-    var Tasks = this.listsFiltered[a].Tasks 
+      var id = this.listsFiltered[a]._id
+      var data = this.listsFiltered[a].Tasks
+      console.log(id)
+      console.warn(data)
+
+      this.eventservice.updateTaskData(id,
+        {"Tasks": data }
+        ).subscribe( res => {
+          console.log(res)
+          // console.log("response from post request");  
+        },    err => {console.log("error");}
+        )
+
       a = a + 1;
-    console.warn(Tasks)
-    tasksArray.push({Tasks})
     }
 
-    console.warn(tasksArray)
 
-    this.eventservice.postTaskData(
-      tasksArray
-      ).subscribe( res => {
-        console.log(res)
-        // console.log("response from post request");  
-      },    err => {console.log("error");}
-      )
+
+    
 
 
     // this.eventservice.postTaskData({
