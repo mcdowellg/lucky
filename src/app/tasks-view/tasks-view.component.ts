@@ -27,17 +27,17 @@ export class TasksViewComponent implements OnInit {
       // Also want to update scheduled tasks to show only filtered search data
       this.listsFiltered = this.lists.filter(input => {
         console.warn(String(input.Tasks[0].taskName).toLowerCase())
-        String(input.Tasks[0].taskName).toLowerCase().includes(data.toLowerCase())
+        String(input.UniqID).toLowerCase().includes(data.toLowerCase())
         
       })
       this.listsFiltered = [...this.listsFiltered];
       console.log(this.listsFiltered)
     })
 
-    this.lists = this.eventservice.getTaskData()
+    this.lists = this.eventservice.getTaskDataColour()
     .subscribe(
           res => {
-            // console.log(res)
+             console.log(res)
                 
             let arr = [];
               for (let prop in res){
@@ -61,7 +61,7 @@ export class TasksViewComponent implements OnInit {
               // Also want to update scheduled tasks to show only filtered search data
               console.log(this.listsFiltered)
               this.listsFiltered = this.lists.filter(input => 
-                String(input.Tasks[0].taskName).toLowerCase().includes(data.toLowerCase()))
+                String(input.UniqID).toLowerCase().includes(data.toLowerCase()))
               this.listsFiltered = [...this.listsFiltered];
               console.log(this.listsFiltered)
             })
@@ -112,6 +112,7 @@ export class TasksViewComponent implements OnInit {
     this.listsFiltered = [...this.listsFiltered];
     console.log(this.listsFiltered.length);
     console.log(this.listsFiltered._id);
+    console.log(this.listsFiltered);
     // Finally we need to send the info back into the DB
 
     // this.eventservice.deleteTask(
@@ -135,12 +136,12 @@ export class TasksViewComponent implements OnInit {
     var tasksArray = [];
     while(a<this.listsFiltered.length){
       var id = this.listsFiltered[a]._id
-      var data = this.listsFiltered[a].Tasks
+      var data = this.listsFiltered[a]
       console.log(id)
       console.warn(data)
 
-      this.eventservice.updateTaskData(id,
-        {"Tasks": data }
+      this.eventservice.updateTaskDataColour(id,
+        data 
         ).subscribe( res => {
           console.log(res)
           // console.log("response from post request");  

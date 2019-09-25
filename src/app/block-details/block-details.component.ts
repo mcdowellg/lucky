@@ -91,12 +91,12 @@ export class BlockDetailsComponent implements OnInit {
     console.log(this.change)
     if(this.change = true){
     this.eventservice.postTaskData({
-      
+
       "Tasks": this.details
       })
       .subscribe(
             res => {
-              console.log("posted task");
+              console.log(res);
             },
             err => {
               console.log("Error occured");

@@ -26,13 +26,13 @@
     
         <div *ngFor="let list of listsFiltered"
           cdkDropList
-          [cdkDropListData]="list.Tasks[1]"
+          [cdkDropListData]="list.TaskData"
           class="example-list"
           (cdkDropListDropped)="drop($event)">
-          <h4>{{list.Tasks[0].taskName}}</h4>
-          <div class="example-box" *ngFor="let list of list.Tasks[1]" cdkDrag> 
+          <h4>{{list.UniqID}}</h4>
+          <div class="example-box" *ngFor="let list of list.TaskData" cdkDrag> 
               <span [style.background-color]="list.colour">
-                  {{list.UniqID}}
+                  {{list.blocks}}
               </span>
           </div>
         

@@ -17,7 +17,8 @@ export class EventsService {
   blockUrl = 'https://nodeappvitiplanning.azurewebsites.net/blocks';
   tasksUrl = 'https://nodeappvitiplanning.azurewebsites.net/tasks';
   deletetasksUrl = 'https://nodeappvitiplanning.azurewebsites.net/tasks/delete';
-
+  taskColourURL = 'https://nodeappvitiplanning.azurewebsites.net/taskColour/';
+  tasksUrlColour = 'https://nodeappvitiplanning.azurewebsites.net/tasksColour';
   
   event: any;
   list:any;
@@ -39,7 +40,9 @@ getTaskData():Observable<any> {
   return this.http.get<any>(this.tasksUrl);
 }
 
-
+getTaskDataColour():Observable<any> {
+  return this.http.get<any>(this.tasksUrlColour);
+}
 
 // onInit() {
 //   this.service.myEvents.subscribe(this.data)
@@ -49,6 +52,12 @@ updateTaskData(id: any, eventPassed: any):Observable<any> {
   // console.log(eventPassed);
   // console.log("is anything happening?");
   return this.http.post<any>(this.taskURL + id, eventPassed);
+}
+
+updateTaskDataColour(id: any, eventPassed: any):Observable<any> {
+  // console.log(eventPassed);
+  // console.log("is anything happening?");
+  return this.http.post<any>(this.taskColourURL + id, eventPassed);
 }
 
 
