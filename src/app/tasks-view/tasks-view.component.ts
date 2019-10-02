@@ -26,7 +26,7 @@ export class TasksViewComponent implements OnInit {
       console.log("2: is anything coming into here?: " + this.searchData)
       // Also want to update scheduled tasks to show only filtered search data
       this.listsFiltered = this.lists.filter(input => {
-        console.warn(String(input.Tasks[0].taskName).toLowerCase())
+        console.warn(String(input.UniqID).toLowerCase())
         String(input.UniqID).toLowerCase().includes(data.toLowerCase())
         
       })

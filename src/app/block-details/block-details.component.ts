@@ -117,6 +117,8 @@ export class BlockDetailsComponent implements OnInit {
         console.log(splitData)
         console.log(this.scheduledTasksFiltered)
         // Also want to update scheduled tasks to show only filtered search data
+        if (splitData[2]) this.scheduledTasksFiltered = this.scheduledTasksFiltered.filter(input => (input.UniqID.toLowerCase().includes(splitData[0].toLowerCase()) && input.UniqID.toLowerCase().includes(splitData[1].toLowerCase())) && input.UniqID.toLowerCase().includes(splitData[2].toLowerCase())) 
+
         if (splitData[1]) this.scheduledTasksFiltered = this.scheduledTasksFiltered.filter(input => (input.UniqID.toLowerCase().includes(splitData[0].toLowerCase()) && input.UniqID.toLowerCase().includes(splitData[1].toLowerCase()))) 
             // (input.UniqID.toLowerCase().includes(splitData[0].toLowerCase()) && input.UniqID.toLowerCase().includes(splitData[1].toLowerCase()))) 
         else this.scheduledTasksFiltered = this.scheduledTasks.filter(input => input.UniqID.toLowerCase().includes(splitData[0].toLowerCase()))
